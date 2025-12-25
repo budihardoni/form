@@ -143,7 +143,7 @@
             <div class="section-title" style="margin-top:0">A. Brand & Campaign Context</div>
             <div class="form-group">
                 <label>1. Brand Name</label>
-                <input type="text" id="brandName" placeholder="Contoh: Makaroni Ngehe, Erigo, atau Brand Kamu...">
+                <input type="text" id="brandName" placeholder="Contoh: Makaroni Ngehe, Maternal, atau Brand Kamu...">
             </div>
 
             <div class="form-group">
@@ -210,6 +210,7 @@
                     <option value="Testimonial">Testimonial (Social Proof & Trust)</option>
                     <option value="Demo">Product Demo (Feature Showcase)</option>
                     <option value="Brand Story">Brand Story (Mission & Values)</option>
+                    <option value="Product Awarness">Awareness (Reach & Visibility)</option>
                     <option value="Social Impact">Social Impact (Community & CSR)</option>
                     <option value="Comparison">Comparison (Market Superiority)</option>
                     <option value="Seasonal Promo">Seasonal / Holiday Promo</option>
@@ -286,15 +287,15 @@
 
                 <div class="option-group">
                     <span class="option-label">Gaya Bicara (Voice):</span>
-                    <label class="check-item"><input type="checkbox" name="narrativeMode" value="Literal"> LUGAS & INFORMATIF
-                    (To-the-Point, Edukasi, Jelas, Serius)</label>
+                    <label class="check-item"><input type="checkbox" name="narrativeMode" value="Literal"> JELAS
+                    (Lugas, Informatif, Serius)</label>
                     <label class="check-item"><input type="checkbox" name="narrativeMode" value="Exaggerated"> SANTAI (Fun, Ringan, Bercanda, Bahasa teman)</label>
-                    <label class="check-item"><input type="checkbox" name="narrativeMode" value="Absurd"> NYELENEH / RANDOM 
-                    (Aneh, Mengejutkan, Twist, Unik)</label>
+                    <label class="check-item"><input type="checkbox" name="narrativeMode" value="Absurd"> NYELENEH 
+                    (Aneh, Lucu, Unik)</label>
                 </div>
 
                 <div class="option-group">
-                    <span class="option-label">Larangan visual (opsional):</span>
+                    <span class="option-label">Larangan visual (Optional):</span>
                     <label class="check-item"><input type="checkbox" name="visualBan" value="Wajah 'AI' / Terlalu Sempurna (Plastik)"> Wajah terlalu cantik / Model</label>
                     <label class="check-item"><input type="checkbox" name="visualBan" value="Terlalu sinematik"> Terlalu Sinematik</label>
                     <label class="check-item"><input type="checkbox" name="visualBan" value="Terlalu kartun"> Terlalu Kartun</label>
@@ -305,6 +306,7 @@
             <div class="form-group">
                 <label>7. Duration</label>
                 <select id="duration">
+                    <option value="8s" selected>8s (Status Whatsapp)</option>
                     <option value="15s" selected>15s (Story / Micro Ad)</option>
                     <option value="30s">30s (TikTok / Reels / Shorts)</option>
                     <option value="1m">1m (Standard Social Ad)</option>
@@ -348,7 +350,7 @@
             <div class="form-group">
                 <label>10. Language</label>
                 <select id="language">
-                    <option value="Indonesian" selected>Indonesian</option>
+                    <option value="Indonesia" selected>Indonesia</option>
                     <option value="English">English</option>
                     <option value="Mix (Indo-Eng)">Mix (Indo-Eng)</option>
                 </select>
@@ -387,7 +389,7 @@
         <div class="output-section">
             <div class="view-toggle">
                 <button class="view-btn active" onclick="switchView('brief')">Preview</button>
-                <button class="view-btn" onclick="switchView('prompt')">Full Prompt</button>
+                <button class="view-btn" onclick="switchView('prompt')">Check out</button>
             </div>
 
             <div class="output-box">
@@ -397,7 +399,7 @@
 
             <div class="action-bar">
                 <button class="btn btn-primary" id="smartCopyBtn" onclick="smartCopy()">
-                    <span>Copy</span>
+                    <span>Order</span>
                 </button>
             </div>
         </div>
@@ -443,7 +445,7 @@
 
             const brandVal = inputs.brandName.value || 'Brand';
             const audienceVal = getS(inputs.audiencePreset, inputs.audienceCustom) || 'General Audience';
-            const langVal = inputs.language.value || 'Indonesian';
+            const langVal = inputs.language.value || 'Indonesia';
 
             let rawDur = getS(inputs.duration, inputs.durationCustom);
             let ratio = '';
@@ -510,7 +512,7 @@
                 html += `<div class="brief-item"><div class="brief-key">1. Brand</div><div class="brief-val">e.g. Unilever, Bintang Toejoeh </div></div>`;
                 html += `<div class="brief-item"><div class="brief-key">2. Duration</div><div class="brief-val">15s (9:16)</div></div>`;
                 html += `<div class="brief-item"><div class="brief-key">3. Audience</div><div class="brief-val">General Audience</div></div>`;
-                html += `<div class="brief-item"><div class="brief-key">4. Language</div><div class="brief-val">Indonesian</div></div>`;
+                html += `<div class="brief-item"><div class="brief-key">4. Language</div><div class="brief-val">Indonesia</div></div>`;
             } else {
                 const rawItems = [
                     { label: 'Brand', val: d.brand },
@@ -541,7 +543,7 @@
             document.getElementById('briefView').innerHTML = html;
 
             const allFiltered = [
-                { label: 'Brand Name', val: d.brand },
+                { label: 'Brand', val: d.brand },
                 { label: 'Industry Category', val: d.industry },
                 { label: 'Product Name', val: d.product },
                 { label: 'USP', val: d.details },
@@ -557,87 +559,13 @@
             ].filter(i => i.val && i.val !== '' && i.val !== 'NONE' && i.val !== 'Undecided');
 
             const blueprint = `
-YOUR ORDER
+
+BRIEF
+-----
+
 ${allFiltered.map((i,idx) => `${idx+1}. ${i.label}: ${i.val}`).join('\n')}
 
----
-<!--
-## LOGIC MATRIX (STRICT MAPPING)
 
-STEP 1: INTENT & DOMAIN RESOLUTION
-*Logic:* Determine Domain based on Industry. Determine Formula based on Campaign Template (Priority 1) OR Domain (Priority 2).
-
-| INDUSTRY | MAPPED DOMAIN | DEFAULT FORMULA (If Template=NONE) |
-| :--- | :--- | :--- |
-| Food/Beverage | \`SENSORY_DOMINANT\` | \`Contrast-Pain-Change\` |
-| Beauty/Fashion | \`AESTHETIC_DOMINANT\` | \`Before-After-Why\` |
-| Tech/SaaS | \`LOGIC_DOMINANT\` | \`Problem-Action-Result\` |
-| Service | \`TRUST_DOMINANT\` | \`Myth-Fact-Lesson\` |
-| Health | \`TRUST_DOMINANT\` | \`Fact-Emotion-Hope\` |
-
-CAMPAIGN OVERRIDE (PRIORITY 1):
-*   PRODUCT_LAUNCH → Formula: \`Hook-Proof-Promise\`
-*   TESTIMONIAL → Formula: \`Problem-Action-Result\`
-*   DEMO → Formula: \`Before-After-Why\`
-*   COMPARISON → Formula: \`Contrast-Pain-Change\`
-*   BRAND_STORY → Formula: \`Vision-Obstacle-Breakthrough\`
-
-STEP 2: EXPRESSION & VISUAL MODE DERIVATION
-*Logic:* Determine the "Vibe" and "Visual Style" based on Industry + Visual Style Selection.
-
-Visual Style Selected: ${d.vStyle || 'Auto-Detect'}
-Visual Bans: ${d.vBan || 'None'}
-
-STEP 3: PLATFORM BIAS & RETENTION (LOCKED)
-*   15s (Micro): Logic \`SCROLL_FAST\`. Retention: \`Click-Feedback + Pattern Interrupt\`.
-*   30s (Short): Logic \`STANDARD\`. Retention: \`Curiosity Loop\`.
-*   60s (Story): Logic \`STORY\`. Retention: \`Sequential Reveal\`.
-*   90s+ (Deep): Logic \`DEEP_DIVE\`. Retention: \`Emotional Payoff Cascade\`.
-
-STEP 4: AUTOMATED COMPONENT ASSIGNMENT
-- Tone: If Visual=\`Natural\` → Tone=\`Authentic/Relatable\`. If Visual=\`Clean\` → Tone=\`Professional/Trust\`.
-- Emotional Arc:
-    - \`Hook-Proof-Promise\` → \`INSIGHT\`
-    - \`Before-After-Why\` → \`TRANSFORMATION\`
-    - \`Problem-Action-Result\` → \`3-ACT\`
-    - \`Contrast-Pain-Change\` → \`TRANSFORMATION\`
-
-STEP 5: CALL TO ACTION (CTA) GENERATOR
-- Logic: Combine [INTENT] + [PRODUCT].
-- Example: "Buktikan bedanya sekarang dengan [PRODUCT]." or "Klik keranjang kuning."
-
----
-
-## OUTPUT FORMAT (BLUEPRINT)
-
-Output ONLY this Markdown Block.
-
-\`\`\`markdown
-1. Key Message / Angle Iklan (Creative Position): [One-line commercial angle: "Core tension + product promise"]
-2. Duration: ${d.duration}
-3. Language: Indonesian
-4. Audience: ${d.audience}
-5. Voice: [Auto-derived based on Industry & Format]
-6. Tone: [Auto-derived based on Visual Style: ${d.vStyle || 'Default'}]
-7. Formula: [MAPPED_FORMULA]
-8. Arc: [MAPPED_ARC]
-9. Retention: [MAPPED_RETENTION]
-10. Call to Action (CTA): ${d.cta || '[GENERATED_CTA]'}
--------------------------
-Brand: ${d.brand}
-Campaign: ${d.campaign || 'General'}
-Product: ${d.product}
-USP: ${d.details}
-Mandatories: ${d.mandatories || 'Logo at end, Safe area compliance.'}
-Assets: Product: ${d.assetProd}, Talent: ${d.assetTalent}
-Visual Style: ${d.vStyle || 'Any'}
-Negative: ${d.vBan || 'None'}
-Format: ${d.format}
--------------------------
-Expression:
-Narrative Mode: ${d.vNar}
-Visual Mode: ${d.vStyle}
-\`\`\`-->
 `.trim();
             document.getElementById('promptView').textContent = blueprint;
         }
@@ -666,7 +594,7 @@ Visual Mode: ${d.vStyle}
                 textToCopy = document.getElementById('promptView').textContent;
             } else {
                 if (!hasInput) {
-                    textToCopy = "1. Brand Brand\n2. Duration 15s (9:16)\n3. Target Audience General Audience\n4. Language Indonesian";
+                    textToCopy = "1. Brand Name\n2. Duration 15s (9:16)\n3. Target Audience General Audience\n4. Language Indonesia";
                 } else {
                     const rawItems = [
                         { label: 'Brand:', val: d.brand },
@@ -694,8 +622,8 @@ Visual Mode: ${d.vStyle}
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const btn = document.getElementById('smartCopyBtn');
-                btn.innerHTML = '<span>Copied</span>';
-                setTimeout(() => btn.innerHTML = '<span>Copy</span>', 1500);
+                btn.innerHTML = '<span>Ordered</span>';
+                setTimeout(() => btn.innerHTML = '<span>Order</span>', 1500);
             });
         }
 
